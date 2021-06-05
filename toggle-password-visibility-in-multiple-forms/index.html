@@ -43,12 +43,12 @@
 
 			<div>
 				<label for="password">Password</label>
-				<input type="password" data-input-type='password' name="password" id="password">
+				<input type="password" name="password" id="password">
 			</div>
 
 			<div>
 				<label for="show-password">
-					<input type="checkbox" name="show-password" id="show-password">
+					<input type="checkbox" name="show-password" id="show-password" data-pv-toggle='#password'>
 					Show password
 				</label>
 			</div>
@@ -65,17 +65,17 @@
 		<form>
 			<div>
 				<label for="current-password">Current Password</label>
-				<input type="password" data-input-type='password' name="current-password" id="current-password">
+				<input type="password" name="current-password" id="current-password">
 			</div>
 
 			<div>
 				<label for="new-password">New Password</label>
-				<input type="password" data-input-type='password' name="new-password" id="new-password">
+				<input type="password" name="new-password" id="new-password">
 			</div>
 
 			<div>
 				<label for="show-passwords">
-					<input type="checkbox" name="show-passwords" id="show-passwords">
+					<input type="checkbox" name="show-passwords" id="show-passwords" data-pv-toggle='#current-password, #new-password'>
 					Show passwords
 				</label>
 			</div>
@@ -87,28 +87,15 @@
 
 		<script>
             /**
-             * A helper function to toggle password visibility
-             * @param {object} target = an html element being clicked
-             * 
-            */
-            const handlePassowrdInput = (target) => {
-                let targetIsValid = target.matches('#show-password') || target.matches('#show-passwords');
-                if (targetIsValid) {
-                    const form = target.closest('form');
-                    const passwords = form.querySelectorAll('[data-input-type="password"]');
-                    for (let password of passwords) {
-                        password.type = target.checked ? 'text' : 'password';
-                    }
-                }
-
-                return;
-            }
-            /**
              * event handler, event delegation
              * 
             */
 			document.addEventListener('click', (e) => {
-                handlePassowrdInput(e.target);
+                if (!e.target.matches('[data-pv-toggle]')) return;
+                let passwords = document.querySelectorAll(e.target.getAttribute('data-pv-toggle'));
+                for (let password of passwords) {
+                        password.type = e.target.checked ? 'text' : 'password';
+                    }
             })
 		</script>
 	</body>
